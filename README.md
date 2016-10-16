@@ -1,7 +1,7 @@
 Connecticut Pretrial Detention
 ==============================
 
-Survival analysis of Connecticut pretrial detention data, updated daily
+Survival analysis of Connecticut pretrial detention data. Data updated daily.
 
 Project Organization
 ------------

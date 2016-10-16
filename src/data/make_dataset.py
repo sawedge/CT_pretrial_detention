@@ -1,30 +1,18 @@
 # -*- coding: utf-8 -*-
-import os
-import click
-import logging
-from dotenv import find_dotenv, load_dotenv
+import requests
+from os import path
 
+def main():
+    # Download the data on Connecticut pretrial detention as CSV, save to raw data folder
 
-@click.command()
-@click.argument('input_filepath', type=click.Path(exists=True))
-@click.argument('output_filepath', type=click.Path())
-def main(input_filepath, output_filepath):
-    """ Runs data processing scripts to turn raw data from (../raw) into
-        cleaned data ready to be analyzed (saved in ../processed).
-    """
-    logger = logging.getLogger(__name__)
-    logger.info('making final data set from raw data')
+    url = 'https://data.ct.gov/api/views/b674-jy6w/rows.csv?accessType=DOWNLOAD'
 
+    local_path = path.abspath(path.join(path.dirname(__file__),'..', '..', 'data', 'raw'))
+    filename = path.join(local_path, 'detention.csv')
+
+    CT_detention = requests.get(url)
+    with open(filename, 'wb') as file:
+        file.write(CT_detention.content)
 
 if __name__ == '__main__':
-    log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    logging.basicConfig(level=logging.INFO, format=log_fmt)
-
-    # not used in this stub but often useful for finding various files
-    project_dir = os.path.join(os.path.dirname(__file__), os.pardir, os.pardir)
-
-    # find .env automagically by walking up directories until it's found, then
-    # load up the .env entries as environment variables
-    load_dotenv(find_dotenv())
-
     main()
